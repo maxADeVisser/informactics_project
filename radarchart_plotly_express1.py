@@ -46,7 +46,7 @@ def fetch_data_list(recordID): # contacts the API and returns a 2D list with thy
 
 def plot_thyPRO_data(scales, values): # function for plotting ThyPRO data
     dataframe = pd.DataFrame(dict(r=values, theta=scales)) # creates a pandas dataframe with the inputs
-    fig = px.line_polar(dataframe, r='r', theta='theta', line_close=True)
+    fig = px.line_polar(dataframe, r='r', theta='theta', line_close=True, range_r=[0,100])
     fig.show()
 
 # ------------------------------------------------------------------------------------ # 
