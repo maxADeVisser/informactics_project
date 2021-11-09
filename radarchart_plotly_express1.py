@@ -1,5 +1,6 @@
 import requests 
 import plotly.express as px
+import plotly.graph_objects as pgo
 import pandas as pd
 # api token for REDcap: DD0E88BF0EF8E12ACD577F664A515337
 
@@ -44,16 +45,21 @@ def fetch_data_list(recordID): # contacts the API and returns a 2D list with thy
 
 # ------------------------------------------------------------------------------------ # 
 
-def plot_thyPRO_data(scales, values): # function for plotting ThyPRO data
+def plot_thyPRO_data(scales, values, values1=None): # function for plotting ThyPRO data
     dataframe = pd.DataFrame(dict(r=values, theta=scales)) # creates a pandas dataframe with the inputs
-    fig = px.line_polar(dataframe, r='r', theta='theta', line_close=True, range_r=[0,100])
+
+    fig = pgo.Figure()
+
+    fig.add_trace(pgo.Scatterpolar(r=values, theta=scales, fill='toself', name='Record A'))
+    fig.add_trace(pgo.Scatterpolar(r=values1, theta=scales, fill='toself', name='Record B'))
+    fig.update_layout(polar=dict(radialaxis=dict(visible=True,range=[0, 100])),showlegend=False)
     fig.show()
 
 # ------------------------------------------------------------------------------------ # 
 
 # --- Main --- #
 # records that work: 28, 27
-#thypro_results = fetch_data_list(28) # method call - returns a 2D list
+thypro_results1 = fetch_data_list(27) # method call - returns a 2D list
 thypro_results = fetch_data_list(28)
 
-plot_thyPRO_data(thypro_results[0], thypro_results[1]) # method call for plotting the data
+plot_thyPRO_data(thypro_results[0], thypro_results[1], thypro_results1[1]) # method call for plotting the data
